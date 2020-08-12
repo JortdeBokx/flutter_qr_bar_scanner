@@ -76,7 +76,9 @@ class QrDetector {
             for (int i = 0; i < detectedItems.size(); ++i) {
                 Barcode barcode = detectedItems.valueAt(i);
                 Log.i(TAG, "Item read: " + barcode.rawValue + ", " + barcode.displayValue);
-                qrDetector.communicator.qrRead(barcode.displayValue);
+                String format = BarcodeFormats.stringFromInt(detectedItems.valueAt(i).format);
+                Log.i(TAG, "Item format: " + format);
+                qrDetector.communicator.qrRead(barcode.displayValue, format);
             }
         }
     }

@@ -40,7 +40,7 @@ public enum BarcodeFormats {
     }
 
     /**
-     * Return the integer value resuling from OR-ing all of the values
+     * Return the integer value resulting from OR-ing all of the values
      * of the supplied strings.
      * <p>
      * Note that if ALL_FORMATS is defined as well as other values, ALL_FORMATS
@@ -59,6 +59,15 @@ public enum BarcodeFormats {
             }
         }
         return val;
+    }
+
+    static String stringFromInt(int format){
+        for (Map.Entry<String, Integer> entry : BarcodeFormats.formatsMap.entrySet()) {
+            if (entry.getValue() == format) {
+                return entry.getKey();
+            }
+        }
+        return "";
     }
 
 

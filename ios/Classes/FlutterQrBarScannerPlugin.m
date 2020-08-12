@@ -30,7 +30,7 @@
 @property(readonly, nonatomic) dispatch_queue_t mainQueue;
 @property(readonly, nonatomic) MLKBarcodeScanner *barcodeScanner;
 
-@property(nonatomic, copy) void (^onCodeAvailable)(NSString *);
+@property(nonatomic, copy) void (^onCodeAvailable)(NSString *, NSString *);
 
 - (instancetype)initWithErrorRef:(NSError **)error;
 @end
@@ -165,8 +165,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       if (barcodes.count > 0) {
           MLKBarcode *barcode0 = barcodes[0];
           NSString * value = [barcode0 rawValue];
+          MLKBarcodeFormat * format = [barcode0 format];
           NSLog(@"Detected barcode: %@", value);
-          _onCodeAvailable(value);
+          _onCodeAvailable(value, format);
       }
   });
 }

@@ -211,7 +211,9 @@ class QrDetector2 {
             if (detectedItems != null) {
                 for (int i = 0; i < detectedItems.size(); ++i) {
                     Log.i(TAG, "Item read: " + detectedItems.valueAt(i).rawValue);
-                    qrDetector.communicator.qrRead(detectedItems.valueAt(i).rawValue);
+                    String format = BarcodeFormats.stringFromInt(detectedItems.valueAt(i).format);
+                    Log.i(TAG, "Item format: " + format);
+                    qrDetector.communicator.qrRead(detectedItems.valueAt(i).rawValue, format);
                 }
             }
 
