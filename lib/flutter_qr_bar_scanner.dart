@@ -13,7 +13,6 @@ import 'package:flutter/services.dart';
 //  }
 //}
 
-
 class PreviewDetails {
   num height;
   num width;
@@ -45,7 +44,8 @@ const _defaultBarcodeFormats = const [
 ];
 
 class FlutterQrReader {
-  static const MethodChannel _channel = const MethodChannel('com.github.contactlutforrahman/flutter_qr_bar_scanner');
+  static const MethodChannel _channel = const MethodChannel(
+      'com.github.contactlutforrahman/flutter_qr_bar_scanner');
   static QrChannelReader channelReader = new QrChannelReader(_channel);
   //Set target size before starting
   static Future<PreviewDetails> start({
@@ -57,11 +57,17 @@ class FlutterQrReader {
     final _formats = formats ?? _defaultBarcodeFormats;
     assert(_formats.length > 0);
 
-    List<String> formatStrings = _formats.map((format) => format.toString().split('.')[1]).toList(growable: false);
+    List<String> formatStrings = _formats
+        .map((format) => format.toString().split('.')[1])
+        .toList(growable: false);
 
     channelReader.setQrCodeHandler(qrCodeHandler);
-    var details = await _channel.invokeMethod(
-        'start', {'targetHeight': height, 'targetWidth': width, 'heartbeatTimeout': 0, 'formats': formatStrings});
+    var details = await _channel.invokeMethod('start', {
+      'targetHeight': height,
+      'targetWidth': width,
+      'heartbeatTimeout': 0,
+      'formats': formatStrings
+    });
 
     // invokeMethod returns Map<dynamic,...> in dart 2.0
     assert(details is Map<dynamic, dynamic>);
@@ -71,7 +77,8 @@ class FlutterQrReader {
     num surfaceHeight = details["surfaceHeight"];
     num surfaceWidth = details["surfaceWidth"];
 
-    return new PreviewDetails(surfaceHeight, surfaceWidth, orientation, textureId);
+    return new PreviewDetails(
+        surfaceHeight, surfaceWidth, orientation, textureId);
   }
 
   static Future stop() {
@@ -90,7 +97,7 @@ class FlutterQrReader {
 
 enum FrameRotation { none, ninetyCC, oneeighty, twoseventyCC }
 
-typedef void QRCodeHandler(String qr);
+typedef void QRCodeHandler(String code, String format);
 
 class QrChannelReader {
   QrChannelReader(this.channel) {
@@ -98,8 +105,10 @@ class QrChannelReader {
       switch (call.method) {
         case 'qrRead':
           if (qrCodeHandler != null) {
-            assert(call.arguments is String);
-            qrCodeHandler(call.arguments);
+            assert(call.arguments is List<String>);
+            String code = call.arguments[0];
+            String format = call.arguments[1];
+            qrCodeHandler(code, format);
           }
           break;
         default:
