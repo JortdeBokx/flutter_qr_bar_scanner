@@ -30,11 +30,9 @@ class _MyHomePageState extends State<MyHomePage> {
   String _qrInfo = 'Scan a QR/Bar code';
   bool _camState = false;
 
-  _qrCallback(String code) {
-    setState(() {
-      _camState = false;
-      _qrInfo = code;
-    });
+  _qrCallback(String code, String format) {
+    print(code);
+    print(format);
   }
 
   _scanCode() {
@@ -70,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     error.toString(),
                     style: TextStyle(color: Colors.red),
                   ),
-                  qrCodeCallback: (code) {
-                    _qrCallback(code);
+                  qrCodeCallback: (code, format) {
+                    _qrCallback(code, format);
                   },
                 ),
               ),
