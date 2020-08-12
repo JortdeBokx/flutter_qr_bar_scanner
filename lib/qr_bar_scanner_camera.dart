@@ -7,8 +7,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_qr_bar_scanner/flutter_qr_bar_scanner.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
-final WidgetBuilder _defaultNotStartedBuilder = (context) => new Text("Loading Scanner Camera...");
-final WidgetBuilder _defaultOffscreenBuilder = (context) => new Text("Scanner Camera Paused.");
+final WidgetBuilder _defaultNotStartedBuilder =
+    (context) => new Text("Loading Scanner Camera...");
+final WidgetBuilder _defaultOffscreenBuilder =
+    (context) => new Text("Scanner Camera Paused.");
 final ErrorCallback _defaultOnError = (BuildContext context, Object error) {
   print("Error reading from scanner camera: $error");
   return new Text("Error reading from scanner camera...");
@@ -27,13 +29,14 @@ class QRBarScannerCamera extends StatefulWidget {
     ErrorCallback onError,
     this.formats,
   })  : notStartedBuilder = notStartedBuilder ?? _defaultNotStartedBuilder,
-        offscreenBuilder = offscreenBuilder ?? notStartedBuilder ?? _defaultOffscreenBuilder,
+        offscreenBuilder =
+            offscreenBuilder ?? notStartedBuilder ?? _defaultOffscreenBuilder,
         onError = onError ?? _defaultOnError,
         assert(fit != null),
         super(key: key);
 
   final BoxFit fit;
-  final ValueChanged<String> qrCodeCallback;
+  final ValueChanged<String, String> qrCodeCallback;
   final Widget child;
   final WidgetBuilder notStartedBuilder;
   final WidgetBuilder offscreenBuilder;
@@ -44,7 +47,8 @@ class QRBarScannerCamera extends StatefulWidget {
   QRBarScannerCameraState createState() => new QRBarScannerCameraState();
 }
 
-class QRBarScannerCameraState extends State<QRBarScannerCamera> with WidgetsBindingObserver {
+class QRBarScannerCameraState extends State<QRBarScannerCamera>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -107,9 +111,11 @@ class QRBarScannerCameraState extends State<QRBarScannerCamera> with WidgetsBind
 
   @override
   Widget build(BuildContext context) {
-    return new LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+    return new LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
       if (_asyncInitOnce == null && onScreen) {
-        _asyncInitOnce = _asyncInit(constraints.maxHeight, constraints.maxWidth);
+        _asyncInitOnce =
+            _asyncInit(constraints.maxHeight, constraints.maxWidth);
       } else if (!onScreen) {
         return widget.offscreenBuilder(context);
       }
@@ -148,7 +154,8 @@ class QRBarScannerCameraState extends State<QRBarScannerCamera> with WidgetsBind
               return preview;
 
             default:
-              throw new AssertionError("${details.connectionState} not supported.");
+              throw new AssertionError(
+                  "${details.connectionState} not supported.");
           }
         },
       );
@@ -181,7 +188,8 @@ class Preview extends StatelessWidget {
 
     return new NativeDeviceOrientationReader(
       builder: (context) {
-        var nativeOrientation = NativeDeviceOrientationReader.orientation(context);
+        var nativeOrientation =
+            NativeDeviceOrientationReader.orientation(context);
 
         int baseOrientation = 0;
         if (orientation != 0 && (width > height)) {
