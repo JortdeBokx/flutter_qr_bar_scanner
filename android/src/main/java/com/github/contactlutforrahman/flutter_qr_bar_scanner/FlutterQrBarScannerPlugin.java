@@ -176,7 +176,9 @@ public class FlutterQrBarScannerPlugin implements MethodCallHandler, QrReaderCal
     @Override
     public void qrRead(String data, String format) {
         ArrayList<String> methodReturn = {data, format};
+        Log.i(TAG, "Item send: " + data + "   " + format);
         //TODO make this a HashMap<String, String>
+
         channel.invokeMethod("qrRead", methodReturn);
     }
 
