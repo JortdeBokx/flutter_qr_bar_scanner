@@ -64,7 +64,7 @@ public enum BarcodeFormats {
     static String stringFromInt(int format){
         for (Map.Entry<String, Integer> entry : BarcodeFormats.formatsMap.entrySet()) {
             if (entry.getValue() == format) {
-                return entry.getKey();
+                return entry.getKey().toString();
             }
         }
         return "";
